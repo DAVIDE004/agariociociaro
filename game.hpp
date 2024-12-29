@@ -11,6 +11,7 @@
 #define POINTFORSQUARE 2
 #define DEFAULTRADIUS 6
 #define TREELAYERS 4
+#define POINTSRADIUS 3
 
 class player{
     public:
@@ -30,6 +31,8 @@ class player{
 class point{
     public:
         int cordXp,cordYp;
+       
+        int radius = POINTSRADIUS;
 
     point();
     point(int X, int Y) : cordXp( X ), cordYp( Y ) {}

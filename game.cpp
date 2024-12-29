@@ -46,7 +46,7 @@ void Quadtree::palline()
     if (IsLeaf) {
 		
 		
-		for(int i = 0;i < POINTFORSQUARE; ++i){
+		for(int i = 0;i < POINTFORSQUARE; i++){
 			this->pointarr[i] = *new point((rand() %(CordXMax -CordXMin+1)) +CordXMin ,(rand() %(CordYMax -CordYMin+1)) +CordYMin);
 		}
 		
@@ -62,7 +62,7 @@ void Quadtree::palline()
 void Quadtree:: Drawpalline()
 {
 	if (IsLeaf){
-		for (int i = 0;i < POINTFORSQUARE; ++i) this-> pointarr[i].Drawpoint();
+		for (int i = 0;i < POINTFORSQUARE; i++) this-> pointarr[i].Drawpoint();
 	}
 	else {
 		ul->Drawpalline();
@@ -92,7 +92,7 @@ void Quadtree::drawDebug(float alpha)
 
 void Quadtree::leafcollision(player* A){
 	
-	for (int i = POINTFORSQUARE; i > 0; --i){
+	for (int i = 0;i < POINTFORSQUARE; i++){
 		if (CheckCollisionCircles((Vector2) {(float) pointarr[i].cordXp, (float) pointarr[i].cordYp },POINTSRADIUS, (Vector2) { (float) A->X,(float) A->Y}, A->radius)){
 			A->radius +=1;
 			pointarr[i].cordXp=(rand() %(CordXMax -CordXMin+1)) +CordXMin;
@@ -104,38 +104,40 @@ void Quadtree::leafcollision(player* A){
 
 void Quadtree::playercollision(player* A)
 {
-	
+	int diffX = (CordXMax - CordXMin)/2;
+    int diffY = (CordYMax - CordYMin)/2;
+
 	if(IsLeaf){
 		leafcollision(A);
 	}
 	else{
-		if (abs(CordXMax/2-A->X) <= A->radius || abs(CordYMax/2-A->Y) <=A->radius){
+		if (abs(CordXMin+diffX-A->X) <= A->radius || abs(CordYMin + diffY-A->Y) <=A->radius){
 			ul->playercollision(A);
 			ur->playercollision(A);
 			ll->playercollision(A);
 			lr->playercollision(A);
 		}
-		else if (abs(CordXMax/2-A->X) <= A->radius || A->Y <= CordYMax/2){
+		else if (abs(CordXMin + diffX-A->X) <= A->radius || A->Y <= CordYMin + diffY){
 			ul->playercollision(A);
 			ur->playercollision(A);
 		}
-		else if (abs(CordXMax/2-A->X) <= A->radius || A->Y > CordYMax/2){
+		else if (abs(CordXMin+diffX-A->X) <= A->radius || A->Y > CordYMin+diffY){
 			ll->playercollision(A);
 			lr->playercollision(A);
 		}
 
-		else if (abs(CordYMax/2-A->Y) <= A->radius || A->X <= CordXMax/2){
+		else if (abs(CordYMin+diffY-A->Y) <= A->radius || A->X <= CordXMin+diffX){
 			ul->playercollision(A);
 			ll->playercollision(A);
 		}
-		else if (abs(CordYMax/2-A->Y) <= A->radius || A->X > CordXMax/2){
+		else if (abs(CordYMin+diffY-A->Y) <= A->radius || A->X > CordXMin+diffX){
 			ur->playercollision(A);
 			lr->playercollision(A);
 		}
-		else if(A->X <= CordXMax/2 || A->Y <= CordYMax/2) ul->playercollision(A);
-		else if (A->X > CordXMax/2 || A->Y > CordYMax/2) lr->playercollision(A);
-		else if (A->X <= CordXMax/2 || A->Y > CordYMax/2) ur->playercollision(A);
-		else if (A->X > CordXMax/2 || A->Y <= CordYMax/2) ll->playercollision(A);
+		else if(A->X <= CordXMin+diffX || A->Y <= CordYMin+diffY) ul->playercollision(A);
+		else if (A->X > CordXMin+diffX || A->Y > CordYMin+diffY) lr->playercollision(A);
+		else if (A->X <= CordXMin+diffX || A->Y > CordYMin+diffY) ur->playercollision(A);
+		else if (A->X > CordXMin+diffX || A->Y <= CordYMin+diffY) ll->playercollision(A);
 	}
 }
 

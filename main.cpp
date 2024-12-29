@@ -37,6 +37,7 @@ int main()
         //Drawing
         BeginDrawing();
             ClearBackground(BLACK);
+            
 
             BeginMode2D(camera);
                 Wind->Drawpalline();
